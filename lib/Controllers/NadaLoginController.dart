@@ -1,14 +1,16 @@
+// ignore_for_file: file_names
+
 import 'package:dio/dio.dart';
 import 'package:nada_async_app/Config/constants.dart';
 import 'package:nada_async_app/Views/NadaLoginPage.dart';
 import 'package:get/get.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:nada_async_app/Views/NadaHomePage.dart';
 import 'dart:convert';
 import '../services/local_database_service.dart';
 import '../APIServices/DioClient.dart';
 import '../Helpers/NadaTokenStorage.dart';
 import '../Models/NadaLoginResponseModel.dart';
-import '../Views/NadaHomePage.dart';
 
 class NadaLoginController extends GetxController {
   final LocalDatabaseService _dbService = LocalDatabaseService();
@@ -32,7 +34,7 @@ class NadaLoginController extends GetxController {
   }
 
   Future<void> login(String email, String password) async {
-    final url = baseAPIURLV1 + loginAPI; // Replace with your API login endpoint
+    const url = baseAPIURLV1 + loginAPI; // Replace with your API login endpoint
 
     try {
       if (!await isConnected()) {
@@ -108,7 +110,7 @@ class NadaLoginController extends GetxController {
   }
 
   Future<void> refreshToken() async {
-    final url =
+    const url =
         baseAPIURLV1 + refreshTokeAPI; // Replace with your refresh endpoint
 
     try {
@@ -148,11 +150,13 @@ class NadaLoginController extends GetxController {
     Get.snackbar("Success", "Logged out successfully",
         snackPosition: SnackPosition.BOTTOM);
     Get.offAll(() => NadaLoginPage());
+    Get.put(NadaLoginController());
   }
 
   // Helper method to check if there is an internet connection
   Future<bool> isConnected() async {
     var connectivityResult = await Connectivity().checkConnectivity();
+    // ignore: unrelated_type_equality_checks
     return connectivityResult != ConnectivityResult.none;
   }
 }
